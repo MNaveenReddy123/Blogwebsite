@@ -1,0 +1,10 @@
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">My Blog</a>
+        <% if (user) { %>
+            <a class="btn btn-outline-light" href="/logout">Logout</a>
+        <% } else { %>
+            <a class="btn btn-outline-light" href="/login">Login</a>
+        <% } %>
+    </div>
+</nav>
