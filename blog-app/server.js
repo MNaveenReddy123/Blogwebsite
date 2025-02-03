@@ -27,7 +27,7 @@ app.use(methodOverride('_method'));
 app.use(session({
     secret: 'mysecret', 
     resave: false, 
-    saveUninitialized: true
+    saveUninitialized: false // Changed to false
 }));
 
 app.use(flash()); // Use flash messages

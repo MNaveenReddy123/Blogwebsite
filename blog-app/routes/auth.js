@@ -34,12 +34,27 @@ router.get('/login', (req, res, next) => {
 });
 
 // POST Login
-router.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: true // Flash error message for login failure
-}), (req, res) => {
-    req.flash('message', 'Login successful!');
-    res.redirect('/blogs/new'); // Redirect to blog creation page
+router.post('/login', (req, res, next) => {
+    // console.log('Login attempt:', req.body); // Debugging log
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            console.log('Authentication error:', err); // Log error
+            return next(err);
+        }
+        if (!user) {
+            console.log('User not found or incorrect password'); // Log user not found
+            req.flash('error', info.message);
+            return res.redirect('/login');
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                console.log('Login error:', err); // Log login error
+                return next(err);
+            }
+            req.flash('message', 'Login successful!');
+            return res.redirect('/blogs'); // Redirect to blogs page after successful login
+        });
+    })(req, res, next);
 });
 
 // GET Logout
